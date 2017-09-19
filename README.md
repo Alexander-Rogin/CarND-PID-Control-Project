@@ -3,6 +3,20 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Reflections on PID coefficients
+
+P coefficient (P stands for Proportional) is applied to the difference between the target position and the current (i.e. measured) one. This coefficient defines how agressively the vehicle will steer towards the target. The greater the cofficient is, the faster the vehicle will reach the target position and the more overshoot it will have. I ended up setting P coefficient to 0.15 which provided me with quite quick reaching the center position with slightly unsteady movement.
+
+I coefficient (I stands for Integral) is applied to the accumulated error. When the error gets big enough, the integral part starts taking an effect. This allows the vehicle to overcome possible systematic bias. In my case, I set I coefficient to 0.0 because otherwise even small values had drastic effect of making the steering angle jump from +25 to -25 degrees without any values in between. I suppose that the error was accumulated very quickly and the integral part dominated the controller. The possible solution might be to reduce I coefficient even more (lower than 0.01) or to collect the error over only the last several steps.
+
+D coefficient (D stands for differential) is applied to the difference between the current error and the error measured at the previous step. The idea of this part of the controller is to counter-steer when the vehicle gets closer to the target. This allows to reduce or completely remove oscillations caused by the P part. I set this parameter to 0.75.
+
+All the coefficients in this project were set manually, by trial and error. First, I increased P until the car could reach the center fast. Then, I increased D to make the car move more steadily and avoid major oscillations. Increasing the I coefficient even slightly destroyed the achieved behavior utterly so I set it back to zero. At the end I adjusted P and D slightly to make the car go through especially sharp turns without leaving the track.
+
+The final coefficient values let the vehicle to cover several laps on the track with the throttle of 0.3 achieving the maximum speed of about 32 kmph. There is still room for improvement due to car oscillations and jerky behavior when taking sharp turns.
+
+---
+
 ## Dependencies
 
 * cmake >= 3.5
